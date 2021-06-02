@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-nginx-test-ip
+spec:
+  selector:
+    matchLabels:
+      app: nginx-test-ip
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-test-ip
+    spec:
+      containers:
+      - image: public.ecr.aws/linjungz/nginx-proxy-protocol
+        imagePullPolicy: Always
+        name: nginx-test
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-nlb-ip
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb-ip"
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  externalTrafficPolicy: Local
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: nginx-test-ip
