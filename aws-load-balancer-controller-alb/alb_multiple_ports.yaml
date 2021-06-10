@@ -40,6 +40,9 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+    
+    # 指定IngressGroup。使用相同IngressGroup的Ingress会被合并到同一个ALB
+    # 参考链接：https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#ingressgroup
     alb.ingress.kubernetes.io/group.name: group1
 
 spec:
@@ -93,8 +96,15 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+
+    # 指定 ALB Listener 的端口，默认为80
+    # 参考链接：https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#traffic-listening
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 8080}]'
+    
+    # 指定IngressGroup。使用相同IngressGroup的Ingress会被合并到同一个ALB
+    # 参考链接：https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#ingressgroup
     alb.ingress.kubernetes.io/group.name: group1
+    
 spec:
   rules:
     - http:
