@@ -1,0 +1,18 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: test-prebootstrap
+  region: ap-southeast-1
+  version: "1.20"
+
+managedNodeGroups:
+- name: nodegroup2
+  desiredCapacity: 1
+  instanceType: m5.xlarge
+  ssh:
+    enableSsm: true
+  preBootstrapCommands:
+    - echo "prebootstrap" >> /tmp/prebootstrap.log
+    - touch /tmp/abc.log
+    - sudo touch /tmp/def.log
